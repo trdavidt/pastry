@@ -26,8 +26,8 @@ nfpms:
   - id: pastry
     package_name: pastry
     vendor: pastry
-    homepage: https://github.com/trdavidt/pastry # TODO: set your repo URL
-    maintainer: Your Name <tr.davidt@gmail.com>      # TODO: set your details
+    homepage: https://github.com/trdavidt/pastry
+    maintainer: David Tran <tr.davidt@gmail.com>
     description: A pastebin.com CLI.
     license: GPL-3.0-or-later
     formats: [rpm, deb]
