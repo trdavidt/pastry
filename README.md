@@ -26,8 +26,7 @@ go install ./...
 ## Setup
 
 The pastebin API requires a developer API key even for guest pastes. On first
-use, `pastry` prompts for it and stores it in `~/.config/pastry/config.json`
-(mode `0600`). Get your key by logging in at <https://pastebin.com/doc_api>.
+use, `pastry` prompts for it and stores it in `~/.config/pastry/config.json`. Get your key by logging in at <https://pastebin.com/doc_api>.
 
 ```sh
 pastry login        # optionally log in to enable account features
