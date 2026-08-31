@@ -203,6 +203,17 @@ func TestReadPublicNotFound(t *testing.T) {
 	}
 }
 
+func TestReadPublicForbidden(t *testing.T) {
+	c := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "private paste", http.StatusForbidden)
+	}))
+
+	_, err := c.ReadPublic("private")
+	if !errors.Is(err, ErrNotFound) {
+		t.Fatalf("err = %v, want ErrNotFound", err)
+	}
+}
+
 func TestReadPrivate(t *testing.T) {
 	c := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if got := r.URL.Path; got != "/api/api_raw.php" {

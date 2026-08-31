@@ -111,7 +111,7 @@ func (c *Client) ReadPublic(key string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	if resp.StatusCode == http.StatusNotFound {
+	if resp.StatusCode == http.StatusNotFound || resp.StatusCode == http.StatusForbidden {
 		return nil, fmt.Errorf("%w: %s", ErrNotFound, key)
 	}
 	if resp.StatusCode != http.StatusOK {
