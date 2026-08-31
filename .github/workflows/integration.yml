@@ -1,0 +1,26 @@
+name: Integration
+
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1" # weekly on Mondays
+
+concurrency:
+  group: integration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Run integration tests
+        env:
+          PASTRY_DEV_KEY: ${{ secrets.PASTRY_DEV_KEY }}
+          PASTRY_USERNAME: ${{ secrets.PASTRY_USERNAME }}
+          PASTRY_PASSWORD: ${{ secrets.PASTRY_PASSWORD }}
+        run: go test -run Integration -v ./cli/
