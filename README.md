@@ -17,7 +17,7 @@ pastry https://pastebin.com/AbC12345     # read a paste to stdout
 
 ```sh
 # From a release tarball
-curl -L https://github.com/<owner>/pastry/releases/latest/download/pastry_linux_amd64.tar.gz | tar xz
+curl -L https://github.com/trdavidt/pastry/releases/latest/download/pastry_linux_amd64.tar.gz | tar xz
 
 # From source (requires Go 1.26+)
 go install ./...
