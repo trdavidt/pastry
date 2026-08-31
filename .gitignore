@@ -1,0 +1,5 @@
+# Build output
+/pastry
+
+# Test binary
+*.test

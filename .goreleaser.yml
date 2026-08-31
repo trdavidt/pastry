@@ -1,0 +1,36 @@
+# GoReleaser configuration: builds static Linux binaries plus .rpm/.deb
+# packages. See https://goreleaser.com/customization/ for the full schema.
+version: 2
+
+builds:
+  - id: pastry
+    main: .
+    binary: pastry
+    goos: [linux]
+    goarch: [amd64, arm64]
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{ .Version }}
+
+archives:
+  - formats: [tar.gz]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: checksums.txt
+
+nfpms:
+  - id: pastry
+    package_name: pastry
+    vendor: pastry
+    homepage: https://github.com/<owner>/pastry # TODO: set your repo URL
+    maintainer: Your Name <you@example.com>      # TODO: set your details
+    description: A pastebin.com CLI.
+    license: GPL-3.0-or-later
+    formats: [rpm, deb]
+    contents:
+      - src: ./man/pastry.1
+        dst: /usr/share/man/man1/pastry.1

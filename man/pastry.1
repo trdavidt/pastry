@@ -1,0 +1,78 @@
+.TH PASTRY 1 "August 2026" "pastry 0.1.0" "User Commands"
+.SH NAME
+pastry \- create and read pastebin.com pastes from the command line
+.SH SYNOPSIS
+.nf
+\fB<command> | pastry\fR [\fIoptions\fR]
+\fBpastry\fR \fIurl-or-key\fR
+\fBpastry list\fR [\fB-l\fR | \fB--limit\fR \fIN\fR]
+\fBpastry delete\fR \fIurl-or-key\fR
+\fBpastry whoami\fR
+\fBpastry login\fR
+\fBpastry logout\fR
+\fBpastry --version\fR
+\fBpastry --help\fR
+.fi
+.SH DESCRIPTION
+.B pastry
+creates pastes from standard input and reads pastes to standard output. When
+given a positional argument, it reads the paste identified by that key or URL.
+When standard input is a pipe, it creates a paste.
+.PP
+Account operations (list, delete, whoami, private pastes) require a stored
+API user key; run \fBpastry login\fR first.
+.SH OPTIONS
+.TP
+.B \-t, \-\-title \fIT\fR
+Paste title.
+.TP
+.B \-f, \-\-format \fIF\fR
+Syntax highlighting value (e.g. \fIgo\fR, \fIpython\fR).
+.TP
+.B \-e, \-\-expire \fIE\fR
+Expiration: \fBN\fR, \fB10M\fR, \fB1H\fR, \fB1D\fR, \fB1W\fR, \fB2W\fR, \fB1M\fR, \fB6M\fR, or \fB1Y\fR.
+.TP
+.B \-g, \-\-guest
+Force a guest paste (send no user key, even if logged in).
+.TP
+.B \-p, \-\-private
+Make the paste private (requires login).
+.TP
+.B \-l, \-\-limit \fIN\fR
+With \fBlist\fR, cap the number of pastes listed (1\-1000, default 50).
+.TP
+.B \-v, \-\-version
+Print the version and exit.
+.TP
+.B \-h, \-\-help
+Print help and exit.
+.SH COMMANDS
+.TP
+.B list
+List the logged-in user's pastes.
+.TP
+.B delete \fIurl-or-key\fR
+Delete a paste owned by the logged-in user.
+.TP
+.B whoami
+Show the logged-in user's account info.
+.TP
+.B login
+Prompt for username and password and store the resulting API user key.
+.TP
+.B logout
+Remove the stored API user key.
+.SH FILES
+.TP
+.I ~/.config/pastry/config.json
+Stores the pastebin API developer key and user key.
+.SH EXAMPLES
+.nf
+\fBecho "hello" | pastry\fR
+\fBecho "hi" | pastry --title greeting\fR
+\fBpastry https://pastebin.com/AbC12345\fR
+\fBpastry list\fR
+\fBpastry delete AbC12345\fR
+.fi
+.SH SEE ALSO
+https://pastebin.com/doc_api
