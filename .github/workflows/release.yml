@@ -3,6 +3,7 @@ name: Release
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -33,10 +34,15 @@ jobs:
         with:
           go-version-file: go.mod
       - name: Verify integration credentials
-        if: ${{ secrets.PASTRY_DEV_KEY == '' || secrets.PASTRY_USERNAME == '' || secrets.PASTRY_PASSWORD == '' }}
+        env:
+          PASTRY_DEV_KEY: ${{ secrets.PASTRY_DEV_KEY }}
+          PASTRY_USERNAME: ${{ secrets.PASTRY_USERNAME }}
+          PASTRY_PASSWORD: ${{ secrets.PASTRY_PASSWORD }}
         run: |
-          echo "::error::Missing PASTRY_DEV_KEY/PASTRY_USERNAME/PASTRY_PASSWORD secrets required for release gating"
-          exit 1
+          if [ -z "$PASTRY_DEV_KEY" ] || [ -z "$PASTRY_USERNAME" ] || [ -z "$PASTRY_PASSWORD" ]; then
+            echo "::error::Missing PASTRY_DEV_KEY/PASTRY_USERNAME/PASTRY_PASSWORD secrets required for release gating"
+            exit 1
+          fi
       - name: Run integration tests
         env:
           PASTRY_DEV_KEY: ${{ secrets.PASTRY_DEV_KEY }}
@@ -47,6 +53,7 @@ jobs:
   goreleaser:
     runs-on: ubuntu-latest
     needs: [test, integration]
+    if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v4
         with:
